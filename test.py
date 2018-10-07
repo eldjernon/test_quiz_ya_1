@@ -8,7 +8,7 @@ def gen(key: AnyStr, length: int = 10):
         yield {key: 1 if i % 2 else -1}
 
 
-@pytest.fixture(params=[10**2, 10**5, 10**8], ids=["10^2", "10^3", "10^6"])
+@pytest.fixture(params=[10**2, 10**3, 10**6], ids=["10^2", "10^3", "10^6"])
 def get_gens(request):
     pow_ = request.param
     src_a = gen("key_a", pow_)

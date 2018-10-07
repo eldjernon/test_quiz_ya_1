@@ -22,7 +22,7 @@ def agg_mp(*args: Iterable[Dict], result, lock):
             aggregate_state[key] += value
 
         lock.acquire()
-        result.update(aggregate_state)
+        result.append(aggregate_state)
         lock.release()
 
     return _agg_mp
@@ -30,7 +30,7 @@ def agg_mp(*args: Iterable[Dict], result, lock):
 
 def agg_multiprocess(*gens: Iterable[Dict]):
     manager = mp.Manager()
-    result = manager.dict()
+    result = manager.list()
     lock = manager.Lock()
     processes = []
 
@@ -42,5 +42,6 @@ def agg_multiprocess(*gens: Iterable[Dict]):
 
     for p in processes:
         p.join()
+        
+    return agg(result)
 
-    return {**result}
