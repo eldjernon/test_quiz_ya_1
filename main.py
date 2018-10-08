@@ -5,7 +5,12 @@ from collections import defaultdict
 import multiprocessing as mp
 
 
-def agg(*args: Iterable[Dict]):
+def agg(*args: Iterable[Dict]) -> Dict:
+    """
+    Аггрегируем сумму значений по ключам
+    :param args:
+    :return: dict, ключ: агрерированная сумма
+    """
     aggregate_state = defaultdict(int)
     for row in chain(*args):
         key, value = row.popitem()
@@ -14,7 +19,13 @@ def agg(*args: Iterable[Dict]):
 
 
 def agg_mp(*args: Iterable[Dict], result, lock):
-
+    """
+    Обертка над аггрерирующей функцией для форка
+    :param args:
+    :param result: список в shared memory
+    :param lock: блокировка
+    :return: target функцию
+    """
     def _agg_mp():
         aggregate_state = defaultdict(int)
         for row in chain(*args):
@@ -29,6 +40,11 @@ def agg_mp(*args: Iterable[Dict], result, lock):
 
 
 def agg_multiprocess(*gens: Iterable[Dict]):
+    """
+    Аггрегируем сумму значений по ключам, вычисления проводим в отдельных процессах
+    :param gens:
+    :return: dict, ключ: агрерированная сумма
+    """
     manager = mp.Manager()
     result = manager.list()
     lock = manager.Lock()

@@ -14,5 +14,6 @@
 
 
 ### Настройка и запуск:
-*  Подготовить окружение с помощью requirements.txt и активировать его
-* `python pytest test.py --duration=0`
+* Подготовить окружение с помощью requirements.txt и активировать его
+* Запуск: `pytest test.py `
+* Время выполнения каждого теста: `pytest test.py --duration=0 | grep call`
