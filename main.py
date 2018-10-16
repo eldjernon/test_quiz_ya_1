@@ -13,8 +13,8 @@ def agg(*args: Iterable[Dict]) -> Dict:
     """
     aggregate_state = defaultdict(int)
     for row in chain(*args):
-        key, value = row.popitem()
-        aggregate_state[key] += value
+        for key, value in row.items():
+            aggregate_state[key] += value
     return aggregate_state
 
 
@@ -29,8 +29,8 @@ def agg_mp(*args: Iterable[Dict], result, lock):
     def _agg_mp():
         aggregate_state = defaultdict(int)
         for row in chain(*args):
-            key, value = row.popitem()
-            aggregate_state[key] += value
+            for key, value in row.items():
+                aggregate_state[key] += value
 
         lock.acquire()
         result.append(aggregate_state)
